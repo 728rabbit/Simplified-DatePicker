@@ -1,32 +1,19 @@
 class iDatePicker {
-    constructor(inputElements, lang = 'en', dateFormat = 'YYYY-MM-DD') {
-        this.inputElements = inputElements; // Array of input elements associated with the date picker
+    constructor(lang = 'en', dateFormat = 'YYYY-MM-DD') {
         this.lang = lang; // Language setting, defaulting to English
         this.dateFormat = dateFormat; // Date format, defaulting to 'YYYY-MM-DD'
         this.calendarElement = null; // Reference to the calendar element
         this.currentDate = new Date(); // Current displayed date in the calendar
         this.selectedDate = null; // Currently selected date
         this.activeInputElement = null; // Currently focused input element
-        this.init(); // Initialize the date picker
-    }
-
-    init() {
-        // Add event listeners to each input element to show the calendar when focused
-        if(this.inputElements) {
-            this.inputElements.forEach(inputElement => {
-                inputElement.classList.add('idatepicker');
-                inputElement.addEventListener('focus', () => this.onFocusInput(inputElement));
-            });
-        }
-
-        // Hide the calendar when clicking outside of it
+        
         document.addEventListener('click', (e) => this.onClickOutside(e));
     }
-
-    renew(inputElements) {
+    
+    render(elements) {
         // Add event listeners to new input elements if not already present
-        this.inputElements = inputElements;
-        if(this.inputElements) {
+        const inputElements = document.querySelectorAll(elements);
+        if(inputElements) {
             inputElements.forEach(inputElement => {
                 if (!inputElement.classList.contains('idatepicker')) {
                     inputElement.classList.add('idatepicker');
@@ -175,7 +162,7 @@ class iDatePicker {
         days.forEach(day => {
             const th = this.createElement('th', {
                 width: '36px',
-                height: '30px',
+                height: '28px',
                 fontSize: '12px',
                 color: '#2ca4e9',
                 padding: '4px',
@@ -236,7 +223,7 @@ class iDatePicker {
         const td = this.createElement('td', {
             backgroundColor: this.selectedDate && dateObj === this.formatDate(this.selectedDate) ? '#2ca4e9' : '',
             width: '36px',
-            height: '30px',
+            height: '28px',
             fontSize: '12px',
             color: isOtherMonth ? '#aaa' : this.selectedDate && dateObj === this.formatDate(this.selectedDate) ? '#fff' : '',
             padding: '4px',
