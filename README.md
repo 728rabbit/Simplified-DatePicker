@@ -5,6 +5,7 @@ The iDatePicker class is a custom date picker component designed to provide a us
 How to use:
 
     <input class="mydate" type="text" name="text" value="2024-11-07">
+    
     let iDatePickerObj = null;
     if(!iDatePickerObj) {
 	    iDatePickerObj = new iDatePicker(document.querySelectorAll('input.mydate'));
