@@ -8,11 +8,9 @@ How to use:
     
     let iDatePickerObj = null;
     if(!iDatePickerObj) {
-	    iDatePickerObj = new iDatePicker(document.querySelectorAll('input.mydate'));
+	iDatePickerObj = new iDatePicker('zh');
     }
-    else {
-	   iDatePickerObj.renew(document.querySelectorAll('input.mydate'));
-    }
+    iDatePickerObj.render('input.mydate');
 
 iDatePicker Functionality Description
 1. Initialization and Configuration:
