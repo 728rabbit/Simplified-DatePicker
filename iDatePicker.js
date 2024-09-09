@@ -12,10 +12,12 @@ class iDatePicker {
 
     init() {
         // Add event listeners to each input element to show the calendar when focused
-        this.inputElements.forEach(inputElement => {
-            inputElement.classList.add('idatepicker');
-            inputElement.addEventListener('focus', () => this.onFocusInput(inputElement));
-        });
+        if(this.inputElements) {
+            this.inputElements.forEach(inputElement => {
+                inputElement.classList.add('idatepicker');
+                inputElement.addEventListener('focus', () => this.onFocusInput(inputElement));
+            });
+        }
 
         // Hide the calendar when clicking outside of it
         document.addEventListener('click', (e) => this.onClickOutside(e));
@@ -23,12 +25,15 @@ class iDatePicker {
 
     renew(inputElements) {
         // Add event listeners to new input elements if not already present
-        inputElements.forEach(inputElement => {
-            if (!inputElement.classList.contains('idatepicker')) {
-                inputElement.classList.add('idatepicker');
-                inputElement.addEventListener('focus', () => this.onFocusInput(inputElement));
-            }
-        });
+        this.inputElements = inputElements;
+        if(this.inputElements) {
+            inputElements.forEach(inputElement => {
+                if (!inputElement.classList.contains('idatepicker')) {
+                    inputElement.classList.add('idatepicker');
+                    inputElement.addEventListener('focus', () => this.onFocusInput(inputElement));
+                }
+            });
+        }
     }
 
     onFocusInput(inputElement) {
@@ -51,7 +56,7 @@ class iDatePicker {
 
     onClickOutside(event) {
         // Hide the calendar if clicking outside of the input or calendar element
-        if (this.calendarElement && !event.target.closest('.datepicker') && !event.target.closest('.idatepicker-calendar')) {
+        if (this.calendarElement && !event.target.closest('.idatepicker') && !event.target.closest('.idatepicker-calendar')) {
             this.hideCalendar();
         }
     }
@@ -82,7 +87,7 @@ class iDatePicker {
         this.calendarElement.style.top = `${rect.bottom + window.scrollY}px`;
         this.calendarElement.style.left = `${rect.left + window.scrollX}px`;
 
-        this.buildCalendar(inputElement); // Build the calendar UI
+        this.buildCalendar(); // Build the calendar UI
     }
 
     hideCalendar() {
@@ -93,13 +98,13 @@ class iDatePicker {
         }
     }
 
-    buildCalendar(inputElement) {
+    buildCalendar() {
         const currentYear = this.currentDate.getFullYear();
         const currentMonth = this.currentDate.getMonth();
         this.calendarElement.innerHTML = ''; // Clear previous calendar content
 
         const headerDiv = this.createHeader(); // Create header with navigation
-        const table = this.createCalendarTable(currentYear, currentMonth, inputElement); // Create calendar table
+        const table = this.createCalendarTable(currentYear, currentMonth); // Create calendar table
 
         this.calendarElement.appendChild(headerDiv);
         this.calendarElement.appendChild(table);
@@ -148,14 +153,14 @@ class iDatePicker {
     changeMonth(delta) {
         // Adjust the displayed month by the delta value (e.g., -1 for previous month, 1 for next month)
         this.currentDate.setMonth(this.currentDate.getMonth() + delta);
-        this.buildCalendar(this.inputElements[0]); // Rebuild the calendar with the new month
+        this.buildCalendar(); // Rebuild the calendar with the new month
     }
 
-    createCalendarTable(year, month, inputElement) {
+    createCalendarTable(year, month) {
         // Create the main table structure for the calendar
         const table = this.createElement('table', { width: '100%', borderCollapse: 'collapse' });
         const thead = this.createTableHeader(); // Create table header with day names
-        const tbody = this.createTableBody(year, month, inputElement); // Create table body with date cells
+        const tbody = this.createTableBody(year, month); // Create table body with date cells
 
         table.appendChild(thead);
         table.appendChild(tbody);
@@ -185,7 +190,7 @@ class iDatePicker {
         return thead;
     }
 
-    createTableBody(year, month, inputElement) {
+    createTableBody(year, month) {
         // Create the body of the calendar with day cells
         const tbody = document.createElement('tbody');
         const firstDayOfMonth = new Date(year, month, 1).getDay(); // Get the day of the week for the first day of the month
@@ -206,15 +211,15 @@ class iDatePicker {
                 if (rowIndex === 0 && colIndex < firstDayOfMonth) {
                     // Display days from the previous month
                     const dateObj = this.formatDate(new Date(year, month - 1, startDay++));
-                    td = this.createDateCell(startDay - 1, dateObj, inputElement, true);
+                    td = this.createDateCell(startDay - 1, dateObj, true);
                 } else if (day > daysInMonth) {
                     // Display days from the next month
                     const dateObj = this.formatDate(new Date(year, month + 1, nextMonthDay));
-                    td = this.createDateCell(nextMonthDay++, dateObj, inputElement, true);
+                    td = this.createDateCell(nextMonthDay++, dateObj, true);
                 } else {
                     // Display days from the current month
                     const dateObj = this.formatDate(new Date(year, month, day));
-                    td = this.createDateCell(day++, dateObj, inputElement, false);
+                    td = this.createDateCell(day++, dateObj, false);
                 }
 
                 row.appendChild(td);
@@ -226,7 +231,7 @@ class iDatePicker {
         return tbody;
     }
 
-    createDateCell(day, dateObj, inputElement, isOtherMonth) {
+    createDateCell(day, dateObj, isOtherMonth) {
         // Create a table cell representing a day in the calendar
         const td = this.createElement('td', {
             backgroundColor: this.selectedDate && dateObj === this.formatDate(this.selectedDate) ? '#2ca4e9' : '',
@@ -242,17 +247,17 @@ class iDatePicker {
         });
         td.dataset.date = dateObj; // Store the date value in the cell
         td.textContent = day;
-        td.addEventListener('click', () => this.onDateSelect(dateObj, inputElement)); // Add event listener for date selection
+        td.addEventListener('click', () => this.onDateSelect(dateObj)); // Add event listener for date selection
         return td;
     }
 
-    onDateSelect(dateObj, inputElement) {
+    onDateSelect(dateObj) {
         // Parse the date from the formatted string
         const selectedDate = this.parseDate(dateObj);
         if (!isNaN(selectedDate)) {
             this.activeInputElement.value = this.formatDate(selectedDate);
             this.selectedDate = selectedDate;
-            this.buildCalendar(inputElement);
+            this.buildCalendar();
             this.hideCalendar();
         }
     }
