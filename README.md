@@ -3,7 +3,6 @@ The iDatePicker class is a custom date picker component designed to provide a us
 
 iDatePicker Functionality Description
 1. Initialization and Configuration:
-
 The iDatePicker is initialized with a list of input elements, language settings (en for English or zh for Chinese), and a configurable date format (DD/MM/YYYY or YYYY-MM-DD).
 The date picker attaches itself to input fields specified during initialization and automatically shows the calendar when an input field is focused.
 
