@@ -13,7 +13,7 @@ class iDatePicker {
     init() {
         // Add event listeners to each input element to show the calendar when focused
         this.inputElements.forEach(inputElement => {
-            inputElement.classList.add('datepicker');
+            inputElement.classList.add('idatepicker');
             inputElement.addEventListener('focus', () => this.onFocusInput(inputElement));
         });
 
@@ -24,8 +24,8 @@ class iDatePicker {
     renew(inputElements) {
         // Add event listeners to new input elements if not already present
         inputElements.forEach(inputElement => {
-            if (!inputElement.classList.contains('datepicker')) {
-                inputElement.classList.add('datepicker');
+            if (!inputElement.classList.contains('idatepicker')) {
+                inputElement.classList.add('idatepicker');
                 inputElement.addEventListener('focus', () => this.onFocusInput(inputElement));
             }
         });
