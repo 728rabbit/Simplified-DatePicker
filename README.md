@@ -8,7 +8,7 @@ How to use:
     
     let iDatePickerObj = null;
     if(!iDatePickerObj) {
-		iDatePickerObj = new iDatePicker('zh');
+	iDatePickerObj = new iDatePicker('zh');
     }
     iDatePickerObj.render('input.mydate');
 
