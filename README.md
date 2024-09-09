@@ -7,9 +7,7 @@ How to use:
     <input class="mydate" type="text" name="text" value="2024-11-07">
     
     let iDatePickerObj = null;
-    if(!iDatePickerObj) {
-	iDatePickerObj = new iDatePicker('zh');
-    }
+    if(!iDatePickerObj) { iDatePickerObj = new iDatePicker('zh'); }
     iDatePickerObj.render('input.mydate');
 
 iDatePicker Functionality Description
