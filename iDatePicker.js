@@ -6,14 +6,14 @@ class iDatePicker {
         this.currentDate = new Date(); // Current displayed date in the calendar
         this.selectedDate = null; // Currently selected date
         this.activeInputElement = null; // Currently focused input element
-        
+
         document.addEventListener('click', (e) => this.onClickOutside(e));
     }
-    
+
     render(elements) {
         // Add event listeners to new input elements if not already present
         const inputElements = document.querySelectorAll(elements);
-        if(inputElements) {
+        if (inputElements) {
             inputElements.forEach(inputElement => {
                 if (!inputElement.classList.contains('idatepicker')) {
                     inputElement.classList.add('idatepicker');
@@ -99,10 +99,18 @@ class iDatePicker {
 
     createHeader() {
         // Create the header with previous and next month buttons and current month/year display
-        const headerDiv = this.createElement('div', { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '5px 0px 10px 0px' });
+        const headerDiv = this.createElement('div', {
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '5px 0px 10px 0px'
+        });
 
         const prevButton = this.createButton('🞀', 'prev-month', () => this.changeMonth(-1)); // Button to go to the previous month
-        const monthYearSpan = this.createElement('span', { fontSize: '14px', fontWeight: 'bold' });
+        const monthYearSpan = this.createElement('span', {
+            fontSize: '14px',
+            fontWeight: 'bold'
+        });
         monthYearSpan.textContent = `${this.currentDate.toLocaleString(this.lang === 'en' ? 'en' : 'zh', { month: 'short' })} / ${this.currentDate.getFullYear()}`;
 
         const nextButton = this.createButton('🞂', 'next-month', () => this.changeMonth(1)); // Button to go to the next month
@@ -145,7 +153,10 @@ class iDatePicker {
 
     createCalendarTable(year, month) {
         // Create the main table structure for the calendar
-        const table = this.createElement('table', { width: '100%', borderCollapse: 'collapse' });
+        const table = this.createElement('table', {
+            width: '100%',
+            borderCollapse: 'collapse'
+        });
         const thead = this.createTableHeader(); // Create table header with day names
         const tbody = this.createTableBody(year, month); // Create table body with date cells
 
@@ -256,7 +267,7 @@ class iDatePicker {
         Object.assign(el.style, styles);
         return el;
     }
-    
+
     isValidDateFormat(dateString) {
         // Define the regex pattern based on the specified date format
         let regex;
@@ -271,12 +282,11 @@ class iDatePicker {
         // Return whether the input matches the regex pattern
         return regex.test(dateString);
     }
-    
+
     parseDate(dateString) {
         // Parse date based on the specified format
-        const [year, month, day] = (this.dateFormat.toString().toUpperCase()) === 'DD/MM/YYYY'
-            ? dateString.split('/').map(Number).reverse()
-            : dateString.split('-').map(Number);
+        const [year, month, day] = (this.dateFormat.toString().toUpperCase()) === 'DD/MM/YYYY' ?
+        dateString.split('/').map(Number).reverse(): dateString.split('-').map(Number);
 
         // Return a new Date object based on parsed values
         return new Date(year, month - 1, day);
@@ -289,7 +299,7 @@ class iDatePicker {
         const day = String(date.getDate()).padStart(2, '0');
 
         // Return the date formatted according to the specified dateFormat
-        if ((this.dateFormat.toString().toUpperCase())=== 'DD/MM/YYYY') {
+        if ((this.dateFormat.toString().toUpperCase()) === 'DD/MM/YYYY') {
             return `${day}/${month}/${year}`;
         }
         return `${year}-${month}-${day}`; // Default format: YYYY-MM-DD
